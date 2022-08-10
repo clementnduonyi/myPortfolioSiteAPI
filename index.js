@@ -17,6 +17,11 @@ async function startServer(){
     server.use('/api/v1/blogs', blogRoutes);
     server.use('/api/v1/categories', categoryRoutes);
     server.use('/api/v1/images', imageUploadRouts);
+
+
+    server.get('/app', (req, res)=>{
+        res.json("Welcome to my APPI")
+    })
     
 
     const PORT = parseInt(process.env.PORT, 10) || 3001;
