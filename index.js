@@ -22,6 +22,10 @@ async function startServer(){
     server.get('/app', (req, res)=>{
         res.json("Welcome to my APPI")
     })
+
+    server.get('', (req, res)=>{
+        res.sendFile('index.html', {root: __dirname})
+    })
     
 
     const PORT = parseInt(process.env.PORT, 10) || 3001;
