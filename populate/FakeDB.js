@@ -7,7 +7,7 @@ const Image = require('../db/models/image');
 
 
 
-class fakeDB {
+class FakeDB {
     async clean(){
         await Image.deleteMany({});
         await Project.deleteMany({});
@@ -27,4 +27,4 @@ class fakeDB {
     }
 }
 
-module.exports = new fakeDB();
+module.exports = new FakeDB();
