@@ -24,7 +24,7 @@ class fakeDB {
        await this.clean()
        await this.addData(projects)
        await this.addData(blogs)
-       await this.addData(images)
+       //await this.addData(images)
     }
 }
 

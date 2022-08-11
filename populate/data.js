@@ -37,7 +37,7 @@ const data = {
         url: 'https://res.cloudinary.com/ccapp/image/upload/v1656075513/image7_xl4hxs.jpg'
       },
       {
-        _id:image6Id,
+        _id: image6Id,
         cloudinaryId: 'image6_zndadu',
         url: 'https://res.cloudinary.com/ccapp/image/upload/v1656075513/image6_zndadu.jpg'
       },
