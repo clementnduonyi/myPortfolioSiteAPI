@@ -7,7 +7,7 @@ const blogSchema = new Schema({
    title: {type: String, required: true, maxlength: 96},
    subTitle: {type: String, required: true},
    body: {type: String, required: true},
-   image: {type: Schema.Types.ObjectId, ref: 'BlogImage'},
+   image: {type: Schema.Types.ObjectId, ref: 'Image'},
    category: {type: Schema.Types.ObjectId, ref: 'Category'},
    userId: {type: String, required: true},
    status: {type: String, default: 'draft', enum: ['draft', 'published', 'deleted']},

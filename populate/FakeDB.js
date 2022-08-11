@@ -1,23 +1,21 @@
 
-const { projects, blogs, bImages, pImages } = require('./data');
+const { projects, blogs, images } = require('./data');
 const Project = require('../db/models/project');
 const Blog = require('../db/models/blog')
-const BlogImage = require('../db/models/blogImage');
-const ProjectImage = require('../db/models/projectImage');
+const Image = require('../db/models/image');
+
 
 
 
 class fakeDB {
     async clean(){
-        await ProjectImage.deleteMany({});
-        await BlogImage.deleteMany({});
+        await Image.deleteMany({});
         await Project.deleteMany({});
         await Blog.deleteMany({});
     }
 
    async addData(){
-        await ProjectImage.create(pImages)
-        await BlogImage.create(bImages)
+        await Image.create(images)
         await Project.create(projects)
         await Blog.create(blogs)
     }
@@ -25,7 +23,8 @@ class fakeDB {
     async populate(){
        await this.clean()
        await this.addData(projects)
-
+       await this.addData(blogs)
+       await this.addData(images)
     }
 }
 

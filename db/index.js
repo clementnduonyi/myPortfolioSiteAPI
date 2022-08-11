@@ -4,8 +4,7 @@ const mongoose = require('mongoose');
 
 require('./models/project')
 require('./models/blog')
-require('./models/blogImage')
-require('./models/projectImage')
+require('./models/image')
 require('./models/category')
 
 

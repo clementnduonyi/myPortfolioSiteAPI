@@ -8,4 +8,4 @@ const imageSchema = new Schema({
     createdAt: {type: Date, default: Date.now },
 })
 
-module.exports = mongoose.model('BlogImage', imageSchema);
+module.exports = mongoose.model('Image', imageSchema);
