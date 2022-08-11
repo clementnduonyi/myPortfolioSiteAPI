@@ -10,13 +10,16 @@ async function startServer(){
     server.use(bodyParser.json())
     const projectsRoutes = require('./routes/projects');
     const blogRoutes = require('./routes/blogs');
-    const imageUploadRouts = require('./routes/imageUploads');
+    const projImgUploadRouts = require('./routes/projImgUploads');
+    const blogImgUploadRouts = require('./routes/blogImgUploads');
     const categoryRoutes = require('./routes/categories')
 
     server.use('/api/v1/projects', projectsRoutes);
     server.use('/api/v1/blogs', blogRoutes);
     server.use('/api/v1/categories', categoryRoutes);
-    server.use('/api/v1/images', imageUploadRouts);
+    
+    server.use('/api/v1/projImages', projImgUploadRouts);
+    server.use('/api/v1/blogImages', blogImgUploadRouts);
 
 
     server.get('/app', (req, res)=>{
