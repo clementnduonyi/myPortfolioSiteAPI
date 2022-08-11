@@ -2,7 +2,7 @@
 const config = require('../config');
 const mongoose = require('mongoose');
 
-const FakeDB = require('./fakeDB')
+const FakeDB = require('./FakeDB')
 
 
 
