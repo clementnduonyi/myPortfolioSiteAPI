@@ -5,7 +5,7 @@ const { checkJwt, checkRole } = require('../controllers/auth')
 
 
 const corsOptions = {
-       origin: 'https://my-portfolio-site-tau.vercel.app',
+       origin: 'https://clementnduonyi.com',
        optionsSuccessStatus: 200 
 }
 
