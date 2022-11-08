@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Blog = mongoose.model('Blog')
+const Comment = mongoose.model('Comment')
 const slugify = require('slugify')
 const uniqueSlug = require('unique-slug')
 const { getAccessToken, getAuth0User } = require('./auth')
@@ -36,10 +37,14 @@ exports.getBlogsByAuthor = async (req, res) => {
 }
 
 exports.getBlogBySlug = async (req, res) =>{
-    const blog = await Blog.findOne({slug: req.params.slug}).populate('image')
-    const { access_token } = await getAccessToken()
-    const author = await getAuth0User(access_token, blog.userId)
-    return res.json({blog, author})
+    const blog = await Blog.findOne({slug: req.params.slug})
+    .populate('image')
+    .populate('comments');
+    
+    const { access_token } = await getAccessToken();
+    const author = await getAuth0User(access_token, blog.userId);
+   
+    return res.json({blog, author});
     
 }
 

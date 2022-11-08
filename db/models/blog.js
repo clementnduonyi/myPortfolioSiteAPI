@@ -9,10 +9,14 @@ const blogSchema = new Schema({
    body: {type: String, required: true},
    image: {type: Schema.Types.ObjectId, ref: 'Image'},
    category: {type: Schema.Types.ObjectId, ref: 'Category'},
+   comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
    userId: {type: String, required: true},
    status: {type: String, default: 'draft', enum: ['draft', 'published', 'deleted']},
    createdAt: {type: Date, default: Date.now },
    updateddAt: {type: Date, default: Date.now }
 })
+
+
+
 
 module.exports = mongoose.model('Blog', blogSchema);
