@@ -1,40 +1,38 @@
 const mongoose = require('mongoose')
 const Comment = mongoose.model('Comment')
+
 const Blog = mongoose.model('Blog')
 const slugify = require('slugify')
 const uniqueSlug = require('unique-slug')
 const { getAccessToken, getAuth0User } = require('./auth')
 
 
-exports.getComments = async (req, res) =>{
-    const comments = await Comment.find().sort({createdAt: -1});
-    
-    const { access_token } = await getAccessToken()
-    const commentsWithUsers = [];
-    const commentAuthors = {};
-    for(let comment of comments){
-        const commentAuthor = commentAuthors[comment.userId] || await getAuth0User(access_token, comment.userId)
-        commentAuthors[commentAuthor.user_id] = commentAuthor
-        commentsWithUsers.push({comment, commentAuthor})
-    }
-    return res.json(commentsWithUsers);
-}
 
-exports.createComment = async (req, res) => {
-    const commentData = req.body;
-    commentData.userId = req.auth.sub;
-    const comment = new Comment(commentData);
-    const blog = await Blog.findById(req.params.blogId);
-    
 
+exports.addComment = async (req, res) => {
     try{
-        const newComment = await comment.save();
-        const commentToBlog = await blog.comments.unshift(newComment);
-        const commentedBlog = await commentToBlog.save();
-        console.log("Comment created successfully!")
+        const { slug } = req.params;
+        const {commentBody} = req.body;
+        commentBody.userId = req.auth.sub
 
-        return res.json(commentedBlog);
+        if (userId != req.auth._id){
+            return res.status(400).send("Unauthorized")
+        }
+
+        const addedComment = await Blog.findOneAndUpdate({slug}, {
+            $push: {comments: {commentBody}}
+        }, 
+        {new: true}
+        )
+        .populate("author", "_id, name")
+        .exec()
+
+        res.json(addedComment);
     }catch(err){
-        return res.status(422).send(err.message)
+        console.log(err)
+        return res.status(400).send('Add lesson failed')
     }
 }
+
+
+

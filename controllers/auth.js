@@ -7,7 +7,7 @@ const config = require("../config");
 
 //Authentication middleware
 //This checks access token in authorization headers of request
-//It will verorfy access-token against Auth0 JSON web key set
+//It will verify access-token against Auth0 JSON web key set
 
 exports.checkJwt = expressjwt({
     secret: jwksRsa.expressJwtSecret({
@@ -28,7 +28,7 @@ exports.checkRole = role => (req, res, next) =>{
     if(user && user[config.AUTH0_NAMESPACE + `/roles`].includes(role)){
         next()
     }else{
-        return res.status(401).send("You aer not authorized to access this resource!")
+        return res.status(401).send("You are not authorized to access this resource!")
     }
 }
 

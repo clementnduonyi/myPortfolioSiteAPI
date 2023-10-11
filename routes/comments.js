@@ -1,21 +1,25 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router({mergeParams: true});
 const { checkJwt, checkRole } = require('../controllers/auth')
 
 
 
 
 const { getComments,
-        createComment,
+        addComment,
+        createReplies,
         updateComment,
         } = require('../controllers/comments');
 
-router.get('', getComments)
+//router.get('', getComments)
 //router.get('/me', checkJwt, checkRole('admin'), getBlogsByAuthor)
 
 
 
-router.post('', checkJwt, createComment)
+router.post("", addComment)
+
+
+// router.post('/comments/:commentId/replies', createReplies)
 //router.patch('/:id', checkJwt, checkRole('admin'), updateComment)
 
 

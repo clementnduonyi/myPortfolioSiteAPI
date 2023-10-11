@@ -16,12 +16,12 @@ async function startServer(){
 
     server.use('/api/v1/projects', projectsRoutes);
     server.use('/api/v1/blogs', blogRoutes);
+    server.use('/api/v1/comments', commentRoutes);
     server.use('/api/v1/categories', categoryRoutes);
     server.use('/api/v1/images', imageUploadRouts);
-    server.use('/api/v1/comments', commentRoutes);
     
     server.get('/app', (req, res)=>{
-        res.json("Welcome to my APPI")
+        res.json("Welcome to my API")
     })
 
     server.get('', (req, res)=>{
@@ -37,4 +37,4 @@ async function startServer(){
 }
 
 
-startServer()
+startServer();

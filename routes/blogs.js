@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router({mergeParams: true});
 const { checkJwt, checkRole } = require('../controllers/auth')
 
 
@@ -17,6 +17,7 @@ router.get('', getBlogs)
 router.get('/me', checkJwt, checkRole('admin'), getBlogsByAuthor)
 router.get('/:id', getBlog)
 router.get('/s/:slug', getBlogBySlug)
+
 
 
 router.post('',checkJwt, checkRole('admin'), createBlog )

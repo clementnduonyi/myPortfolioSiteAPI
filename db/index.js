@@ -7,6 +7,7 @@ require('./models/blog')
 require('./models/image')
 require('./models/category')
 require('./models/comment')
+// require('./models/reply')
 
 
 exports.connect = () => {
