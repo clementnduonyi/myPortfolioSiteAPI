@@ -9,7 +9,7 @@ const cors = require('cors');
 
 
 const corsOptions = {
-    origin: 'http://localhost:3000' || "https://alphaefficacy-clementnduonyi.vercel.app",
+    origin: 'http://localhost:3000' /*|| "https://alphaefficacy-clementnduonyi.vercel.app"*/,
     optionsSuccessStatus: 200 
 }
 const upload = require('../services/multer')
