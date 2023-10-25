@@ -69,7 +69,10 @@ exports.updateCategory = async (req, res) =>{
             return res.status(422).send(err.message);
         }
 
-        cat.slug = slugify(body.name)
+        cat.slug = slugify(cat.name, {
+            replacement: '-',  // replace spaces with replacement character, defaults to `-`
+            lower: true,      // convert to lower case, defaults to `false`
+        })
         cat.set(body)
        //cat.createdAt = new Date();
 
