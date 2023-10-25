@@ -62,7 +62,7 @@ const _saveCat = async cat => {
 }
 
 exports.updateCategory = async (req, res) =>{
-    const {body, params: {id}} = req;
+    const {body, slug, params: {id}} = req;
     try{
         const updatedCategory = 
             await Category.findOneAndUpdate({_id: id}, body, slug, {new: true, runValidators: true})
