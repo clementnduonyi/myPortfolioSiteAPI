@@ -82,7 +82,7 @@ exports.updateCategory = async (req, res) =>{
        //blog.createdAt = new Date();
 
        try{
-            const updatedCategory = await _saveBlog(cat);
+            const updatedCategory = await _saveCat(cat);
             return res.json(updatedCategory)
         }catch(error){
             return res.status(422).send(error.message)
