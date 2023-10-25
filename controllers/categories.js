@@ -67,8 +67,7 @@ exports.updateCategory = async (req, res) =>{
    
     try{
         const updatedCategory = 
-            await Category.findOneAndUpdate({_id: id}, body, {new: true, runValidators: true})
-            updatedCategory.save();
+            await Category.findById({_id: id}, body, {new: true, runValidators: true}).save();
             return res.json(updatedCategory)
     }catch(error){
         return res.status(422).send(error.message)
