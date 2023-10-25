@@ -62,13 +62,39 @@ const _saveCat = async cat => {
 }
 
 exports.updateCategory = async (req, res) =>{
-    const {body, slug, params: {id}} = req;
-    try{
+    const {body, params: {id}} = req;
+
+    Blog.findById(id, async (err, cat) => {
+        if(err){
+            return res.status(422).send(err.message);
+        }
+
+
+       if(body.name != cat.slug){
+           cat.slug = slugify(cat.name, {
+            replacement: '-',  // replace spaces with replacement character, defaults to `-`
+            lower: true,      // convert to lower case, defaults to `false`
+           
+          })
+       }
+
+       cat.set(body)
+       //blog.createdAt = new Date();
+
+       try{
+            const updatedCategory = await _saveBlog(cat);
+            return res.json(updatedCategory)
+        }catch(error){
+            return res.status(422).send(error.message)
+        }
+    })
+   
+    /*try{
         const updatedCategory = 
             await Category.findOneAndUpdate({_id: id}, body, slug, {new: true, runValidators: true})
             updatedCategory.slug = slugify(body.name)
             return res.json(updatedCategory)
     }catch(error){
         return res.status(422).send(error.message)
-    }
+    }*/
 }
