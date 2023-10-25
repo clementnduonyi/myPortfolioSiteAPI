@@ -69,7 +69,8 @@ exports.updateCategory = async (req, res) =>{
             return res.status(422).send(err.message);
         }
 
-       cat.set(body)
+        cat.slug = slugify(cat.name)
+        cat.set(body)
        //cat.createdAt = new Date();
 
        try{
