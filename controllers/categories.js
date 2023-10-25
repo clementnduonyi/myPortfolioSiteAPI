@@ -69,15 +69,15 @@ exports.updateCategory = async (req, res) =>{
             return res.status(422).send(err.message);
         }
 
-        cat.slug = slugify(cat.name, {
-            replacement: '-',  // replace spaces with replacement character, defaults to `-`
-            lower: true,      // convert to lower case, defaults to `false`
-        })
         cat.set(body)
        //cat.createdAt = new Date();
 
        try{
-            const updatedCat = await _saveCat(cat);
+            const updatedCat = await _saveCat(cat)
+            updatedCat.slug = slugify(updatedCat.name, {
+                replacement: '-',  // replace spaces with replacement character, defaults to `-`
+                lower: true,      // convert to lower case, defaults to `false`
+            })
             return res.json(updatedCat)
         }catch(error){
             return res.status(422).send(error.message)
