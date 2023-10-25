@@ -64,12 +64,12 @@ const _saveCat = async cat => {
 exports.updateCategory = async (req, res) =>{
     const {body, params: {id}} = req;
 
-    Category.findById(id, async (err, cat) => {
+    Category.findOneAndUpdate(id, async (err, cat) => {
         if(err){
             return res.status(422).send(err.message);
         }
 
-        cat.slug = slugify(cat.name)
+        cat.slug = slugify(body.name)
         cat.set(body)
        //cat.createdAt = new Date();
 
