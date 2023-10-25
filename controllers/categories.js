@@ -64,25 +64,20 @@ const _saveCat = async cat => {
 exports.updateCategory = async (req, res) =>{
     const {body, params: {id}} = req;
 
-    Category.findOneAndUpdate(id, async (err, cat) => {
-        if(err){
-            return res.status(422).send(err.message);
-        }
+    const cat = await Category.findOneAndUpdate({_id: id}, body, {new: true, runValidators: true})
 
-        cat.set(body)
-       //cat.createdAt = new Date();
-
-       try{
-            const updatedCat = await _saveCat(cat)
-            updatedCat.slug = slugify(updatedCat.name, {
-                replacement: '-',  // replace spaces with replacement character, defaults to `-`
-                lower: true,      // convert to lower case, defaults to `false`
-            })
-            return res.json(updatedCat)
-        }catch(error){
-            return res.status(422).send(error.message)
-        }
-    })
+   
+    try{
+        const updatedCat = await _saveCat(cat)
+        updatedCat.slug = slugify(updatedCat.name, {
+            replacement: '-',  // replace spaces with replacement character, defaults to `-`
+            lower: true,      // convert to lower case, defaults to `false`
+        })
+        return res.json(updatedCat)
+    }catch(error){
+        return res.status(422).send(error.message)
+    }
+    
 
    
    /* try{
