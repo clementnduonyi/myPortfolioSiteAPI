@@ -65,7 +65,8 @@ exports.updateCategory = async (req, res) =>{
     const {body, params: {id}} = req;
     try{
         const updatedCategory = 
-            await Category.findOneAndUpdate({_id: id}, body, {new: true, runValidators: true})
+            await Category.findOneAndUpdate({_id: id}, body, slug, {new: true, runValidators: true})
+            updatedCategory.slug = slugify(body.name)
             return res.json(updatedCategory)
     }catch(error){
         return res.status(422).send(error.message)
