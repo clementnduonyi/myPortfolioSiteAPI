@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Blog = mongoose.model('Blog')
+const Category = mongoose.model('Category')
 const slugify = require('slugify')
 const uniqueSlug = require('unique-slug')
 const { getAccessToken, getAuth0User } = require('./auth')
@@ -7,7 +8,9 @@ const { getAccessToken, getAuth0User } = require('./auth')
 
 
 exports.getBlogs = async (req, res) =>{
-    const blogs = await Blog.find({status: "published"}).sort({createdAt: -1}).populate('image');
+    const blogs = await Blog.find({status: "published"}).sort({createdAt: -1})
+    .populate('image')
+    .populate('category');
     
     const { access_token } = await getAccessToken()
     const blogsWithUsers = [];
@@ -48,6 +51,7 @@ exports.getBlogBySlug = async (req, res) =>{
     return res.json({blog, author});
     
 }
+
 
 
 exports.createBlog = async (req, res) => {
@@ -109,6 +113,24 @@ exports.updateBlog = async (req, res) =>{
 }
 
 
+exports.relatedBlog = async (req, res) => {
+    //let limit = req.body.limit ? parseInt(req.body.limit) : 3;
+    const { _id, category } = req.body;
+  
+    // find all blogs, not including the current blog, based on categories of the current blog
+    
+    const blogs = await Blog.find({ _id: { $ne: _id}, category: { $in: category } })
+    .populate('image')
+    .populate('category')
+    return res.json(blogs)
+   
+}
+
+exports.search = async (req,res) => {
+    const blogs = await Blog.find({title : {$regex : String(req.body.query)}})
+    if(!blogs || blogs.length === 0) res.status(400).send({error : "No post was found"})
+    res.status(200).send(blogs)
+}
 
 exports.addComment = async (req, res) => {
     try{

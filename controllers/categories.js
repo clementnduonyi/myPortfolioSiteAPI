@@ -17,8 +17,11 @@ exports.getCat = async (req, res) =>{
 
 exports.getCatBySlug = async (req, res) =>{
     const category = await Category.findOne({slug: req.params.slug}).select('_id name slug')
-    const blogs = await Blog.find({ category: {$in: category} }).populate('image')
-    const { access_token } = await getAccessToken()
+    const blogs = await Blog.find({category: {$in: category}})
+    .populate('image')
+    .populate('category')
+
+    const { access_token } = await getAccessToken();
     const blogsWithUsers = [];
     const authors = {};
     for(let blog of blogs){
@@ -27,8 +30,9 @@ exports.getCatBySlug = async (req, res) =>{
         blogsWithUsers.push({blog, author})
     }
     return res.json({blogsWithUsers, category});
-    
 }
+    
+
 
 
 exports.createCategory = async (req, res) =>{

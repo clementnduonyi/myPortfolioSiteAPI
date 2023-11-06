@@ -11,17 +11,23 @@ const { getBlogs,
         createBlog,
         updateBlog,
         getBlogsByAuthor,
+        search,
+        relatedBlog
         } = require('../controllers/blogs');
 
 router.get('', getBlogs)
 router.get('/me', checkJwt, checkRole('admin'), getBlogsByAuthor)
 router.get('/:id', getBlog)
 router.get('/s/:slug', getBlogBySlug)
+router.post('/related-post', relatedBlog)
+router.post('/search', search)
+
 
 
 
 router.post('',checkJwt, checkRole('admin'), createBlog )
-router.patch('/:id', checkJwt, checkRole('admin'), updateBlog)
+router.patch('/:id', checkJwt, checkRole('admin'), updateBlog);
+
 
 
 
