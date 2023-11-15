@@ -55,6 +55,7 @@ exports.getBlogs = async (req, res) =>{
     return res.json(blogsWithUsers);
 }
 
+
 exports.getBlog = async (req, res) =>{
     const blog = await Blog.findById(req.params.id)
     .populate('image')
