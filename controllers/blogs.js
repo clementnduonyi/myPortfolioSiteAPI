@@ -11,7 +11,7 @@ exports.getBlogs = async (req, res) =>{
     const { search } = req.query;
     let blogs;
     if (search) { // If search exists, the user typed in the search bar
-        blogs = await Blog.aggregate(
+        blogs = await Blog.find({status: "published"}).aggregate(
           [
             {
               '$search': {
@@ -24,6 +24,20 @@ exports.getBlogs = async (req, res) =>{
             }, {
               '$limit': 6
             }, {
+                "$lookup" : {
+                    from: "image",
+                    localField: "image",
+                    foreignField: "url",
+                    as: "image"
+                }
+            },{
+                "$lookup" : {
+                    from: "category",
+                    localField: "category",
+                    foreignField: "name",
+                    as: "category"
+                }
+            },{
               '$project': {
                 '_id': 1, 
                 'title': 1,
@@ -31,12 +45,14 @@ exports.getBlogs = async (req, res) =>{
                 'author': 1,
                 'image': 1,
                 'category': 1,
+                'status': 1,
                 'slug': 1,
                 'createdAt': 1,
               }
             }
           ]
         )
+        
 
     }else { // The search is empty so the value of "search" is undefined
         blogs = await Blog.find({status: "published"}).sort({createdAt: -1})
