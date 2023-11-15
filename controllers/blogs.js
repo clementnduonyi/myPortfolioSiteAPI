@@ -30,9 +30,9 @@ exports.getBlogs = async (req, res) =>{
                 'subTitle': 1, 
                 'author': 1,
                 'image': 1,
-                'category': 1, 
+                'category': 1,
+                'slug': 1,
                 'createdAt': 1,
-               
               }
             }
           ]
