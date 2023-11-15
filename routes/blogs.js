@@ -1,8 +1,13 @@
 const express = require('express');
 const router = express.Router({mergeParams: true});
+const cors = require('cors');
 const { checkJwt, checkRole } = require('../controllers/auth')
 
 
+const corsOptions = {
+    origin: ["http://localhost:3000", "https://alphaefficacy-clementnduonyi.vercel.app"],
+    optionsSuccessStatus: 200 
+}
 
 
 const { getBlogs,
@@ -11,16 +16,14 @@ const { getBlogs,
         createBlog,
         updateBlog,
         getBlogsByAuthor,
-        search,
-        relatedBlog
         } = require('../controllers/blogs');
 
-router.get('', getBlogs)
+router.get('', cors(corsOptions), getBlogs)
 router.get('/me', checkJwt, checkRole('admin'), getBlogsByAuthor)
 router.get('/:id', getBlog)
 router.get('/s/:slug', getBlogBySlug)
-router.post('/related-post', relatedBlog)
-router.post('/search', search)
+
+
 
 
 

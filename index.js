@@ -13,12 +13,15 @@ async function startServer(){
     const imageUploadRouts = require('./routes/images');
     const categoryRoutes = require('./routes/categories');
     const commentRoutes = require('./routes/comments');
+    const searchRoutes = require('./routes/search');
 
     server.use('/api/v1/projects', projectsRoutes);
     server.use('/api/v1/blogs', blogRoutes);
     server.use('/api/v1/comments', commentRoutes);
     server.use('/api/v1/categories', categoryRoutes);
+    server.use('/api/v1/search', searchRoutes);
     server.use('/api/v1/images', imageUploadRouts);
+   
     
     server.get('/app', (req, res)=>{
         res.json("Welcome to my API")

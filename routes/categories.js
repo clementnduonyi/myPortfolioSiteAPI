@@ -5,7 +5,7 @@ const { checkJwt, checkRole } = require('../controllers/auth')
 
 
 const corsOptions = {
-       origin:  "https://alphaefficacy-clementnduonyi.vercel.app" /*|| "http://localhost:3000"*/,
+       origin: ["http://localhost:3000", "https://alphaefficacy-clementnduonyi.vercel.app"],
        optionsSuccessStatus: 200 
 }
 

@@ -8,9 +8,40 @@ const { getAccessToken, getAuth0User } = require('./auth')
 
 
 exports.getBlogs = async (req, res) =>{
-    const blogs = await Blog.find({status: "published"}).sort({createdAt: -1})
-    .populate('image')
-    .populate('category');
+    const { search } = req.query;
+    let blogs;
+    if (search) { // If search exists, the user typed in the search bar
+        blogs = await Blog.aggregate(
+          [
+            {
+              '$search': {
+                'index': 'blogSearch', 
+                'autocomplete': {
+                  'query': search, // noticed we assign a dynamic value to "query"
+                  'path': 'title',
+                }
+              }
+            }, {
+              '$limit': 6
+            }, {
+              '$project': {
+                '_id': 1, 
+                'title': 1, 
+                'author': 1,
+                'image': 1,
+                'category': 1, 
+                'createdAt': 1,
+               
+              }
+            }
+          ]
+        )
+
+    }else { // The search is empty so the value of "search" is undefined
+        blogs = await Blog.find({status: "published"}).sort({createdAt: -1})
+        .populate('image')
+        .populate('category');
+    }
     
     const { access_token } = await getAccessToken()
     const blogsWithUsers = [];
@@ -20,10 +51,10 @@ exports.getBlogs = async (req, res) =>{
         authors[author.user_id] = author
         blogsWithUsers.push({blog, author})
     }
+
     return res.json(blogsWithUsers);
 }
 
-   
 exports.getBlog = async (req, res) =>{
     const blog = await Blog.findById(req.params.id)
     .populate('image')
@@ -41,24 +72,22 @@ exports.getBlogsByAuthor = async (req, res) => {
 }
 
 exports.getBlogBySlug = async (req, res) =>{
-    const blog = await Blog.findOne({slug: req.params.slug})
+    const slug = req.params.slug
+    const blog = await Blog.findOne({slug: slug})
     .populate('image')
     .populate('comments');
-    
+
+    const relatedblogs = await Blog.find({category: blog.category, slug: {$ne: blog.slug}})
     const { access_token } = await getAccessToken();
     const author = await getAuth0User(access_token, blog.userId);
    
-    return res.json({blog, author});
-    
+    return res.json({blog, author, blogs: relatedblogs});
 }
-
-
 
 exports.createBlog = async (req, res) => {
     const blogBody = req.body;
     blogBody.userId = req.auth.sub;
     const blog = new Blog(blogBody);
-
     try{
         createdBlog = await blog.save();
         return res.json(createdBlog);
@@ -79,7 +108,6 @@ const _saveBlog = async blog => {
         }
         throw(e)
     }
-    
 }
 
 exports.updateBlog = async (req, res) =>{
@@ -89,19 +117,15 @@ exports.updateBlog = async (req, res) =>{
         if(err){
             return res.status(422).send(err.message);
         }
-
-
        if(body.status === "published" && !blog.slug){
            blog.slug = slugify(blog.title, {
             replacement: '-',  // replace spaces with replacement character, defaults to `-`
             lower: true,      // convert to lower case, defaults to `false`
-           
           })
        }
 
        blog.set(body)
        blog.createdAt = new Date();
-
        try{
             const updatedBlog = await _saveBlog(blog);
             return res.json(updatedBlog)
@@ -109,28 +133,8 @@ exports.updateBlog = async (req, res) =>{
             return res.status(422).send(error.message)
         }
     })
-   
 }
 
-
-exports.relatedBlog = async (req, res) => {
-    //let limit = req.body.limit ? parseInt(req.body.limit) : 3;
-    const { _id, category } = req.body;
-  
-    // find all blogs, not including the current blog, based on categories of the current blog
-    
-    const blogs = await Blog.find({ _id: { $ne: _id}, category: { $in: category } })
-    .populate('image')
-    .populate('category')
-    return res.json(blogs)
-   
-}
-
-exports.search = async (req,res) => {
-    const blogs = await Blog.find({title : {$regex : String(req.body.query)}})
-    if(!blogs || blogs.length === 0) res.status(400).send({error : "No post was found"})
-    res.status(200).send(blogs)
-}
 
 exports.addComment = async (req, res) => {
     try{
