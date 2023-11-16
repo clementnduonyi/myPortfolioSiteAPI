@@ -81,7 +81,7 @@ exports.getBlogs = async (req, res) =>{
         blogsWithUsers.push({blog, author})
     }
 
-    return res.json(blogsWithUsers);
+    return res.json({blogsWithUsers});
 }
 
 

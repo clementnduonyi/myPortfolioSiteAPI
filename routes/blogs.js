@@ -25,9 +25,6 @@ router.get('/s/:slug', getBlogBySlug)
 
 
 
-
-
-
 router.post('',checkJwt, checkRole('admin'), createBlog )
 router.patch('/:id', checkJwt, checkRole('admin'), updateBlog);
 
