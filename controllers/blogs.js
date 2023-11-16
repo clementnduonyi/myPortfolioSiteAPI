@@ -13,6 +13,7 @@ exports.getBlogs = async (req, res) =>{
     if (search) { // If search exists, the user typed in the search bar
         blogs = await Blog.aggregate(
           [
+            {'$match': {status: ['published']}},
             {
               '$search': {
                 'index': 'blogSearch', 
@@ -21,23 +22,25 @@ exports.getBlogs = async (req, res) =>{
                   'path': 'title',
                 }
               }
-            }, {
-              '$limit': 6
-            }, {
-                "$lookup" : {
-                    from: "image",
-                    localField: "image",
-                    foreignField: "url",
-                    as: "image"
-                }
-            },{
-                "$lookup" : {
-                    from: "category",
-                    localField: "category",
-                    foreignField: "name",
-                    as: "category"
-                }
-            },{
+            }, 
+            {'$limit': 6},
+            { $lookup: {
+                from: 'Image',
+                localField: 'image',
+                foreignField: '_id',
+                as: 'image',
+              },
+            },
+            { $lookup: {
+                from: 'Category',
+                localField: 'category',
+                foreignField: '_id',
+                as: 'category',
+              },
+            },
+            { $unwind: '$image' },
+            { $unwind: '$category' },
+            {
               '$project': {
                 '_id': 1, 
                 'title': 1,
