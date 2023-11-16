@@ -25,30 +25,29 @@ exports.getBlogs = async (req, res) =>{
             },
             {'$match': {status: 'published'}},
             {'$limit': 6},
-            /*{ $lookup: {
-                from: 'Image',
+            { $lookup: {
+                from: 'image',
                 localField: 'image',
                 foreignField: '_id',
                 as: 'image',
               },
             },
             { $lookup: {
-                from: 'Category',
+                from: 'category',
                 localField: 'category',
                 foreignField: '_id',
                 as: 'category',
               },
             },
             { $unwind: '$image' },
-            { $unwind: '$category' },*/
+            { $unwind: '$category' },
             {
               '$project': {
                 '_id': 1, 
                 'title': 1,
                 'subTitle': 1, 
-                'author': 1,
-                'image': 1,
-                'category': 1,
+                'image.url': 1,
+                'category.name': 1,
                 'status': 1,
                 'slug': 1,
                 'createdAt': 1,
