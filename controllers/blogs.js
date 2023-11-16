@@ -23,8 +23,7 @@ exports.getBlogs = async (req, res) =>{
                 }
               }
             },
-            {'$match': {status: 'published'}},
-            {'$limit': 6},
+           
             { $lookup: {
                 from: 'images',
                 localField: 'image',
@@ -41,6 +40,11 @@ exports.getBlogs = async (req, res) =>{
             },
             { $unwind: '$image' },
             { $unwind: '$category' },
+
+            {'$match': {status: 'published'}},
+            
+            {'$limit': 6},
+
             {
               '$project': {
                 '_id': 1, 
