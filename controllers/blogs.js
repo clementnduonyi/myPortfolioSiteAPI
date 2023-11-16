@@ -11,7 +11,7 @@ exports.getBlogs = async (req, res) =>{
     const { search } = req.query;
     let blogs;
     if (search) { // If search exists, the user typed in the search bar
-        Blog.aggregate(
+        blogs = await Blog.aggregate(
           [
            
             {
@@ -42,7 +42,7 @@ exports.getBlogs = async (req, res) =>{
             { $unwind: '$category' },
 
             {'$match': {status: 'published'}},
-            
+
             {'$limit': 6},
 
             {
@@ -58,13 +58,7 @@ exports.getBlogs = async (req, res) =>{
               }
             }
           ]
-        ).exec((err, populatedBlogs) => {
-            if (err) throw err;
-
-            blogs= populatedBlogs
-            console.log(populatedBlogs)
-           
-        })
+        )
         
 
     }else { // The search is empty so the value of "search" is undefined
