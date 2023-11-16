@@ -23,7 +23,7 @@ exports.getBlogs = async (req, res) =>{
                 }
               }
             },
-            {'$match': {status: ['published']}},
+            {'$match': {status: 'published'}},
             {'$limit': 6},
             { $lookup: {
                 from: 'Image',
