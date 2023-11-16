@@ -54,7 +54,7 @@ exports.getBlogs = async (req, res) =>{
               }
             }
           ]
-        )
+        ).exec()
         
 
     }else { // The search is empty so the value of "search" is undefined
