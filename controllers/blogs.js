@@ -47,7 +47,8 @@ exports.getBlogs = async (req, res) =>{
 
             {
               '$project': {
-                '_id': 1, 
+                '_id': 1,
+                'userId': 1, 
                 'title': 1,
                 'subTitle': 1, 
                 'image.url': 1,
