@@ -13,7 +13,7 @@ exports.getBlogs = async (req, res) =>{
     if (search) { // If search exists, the user typed in the search bar
         blogs = await Blog.aggregate(
           [
-            {'$match': {status: ['published']}},
+           
             {
               '$search': {
                 'index': 'blogSearch', 
@@ -22,7 +22,8 @@ exports.getBlogs = async (req, res) =>{
                   'path': 'title',
                 }
               }
-            }, 
+            },
+            {'$match': {status: ['published']}},
             {'$limit': 6},
             { $lookup: {
                 from: 'Image',
