@@ -107,7 +107,12 @@ exports.getBlogBySlug = async (req, res) =>{
     .populate('category')
     
 
-    const blogs = await Blog.find({category: blog.category, slug: {$ne: blog.slug}})
+    const blogs = await Blog.find({
+        category: blog.category, 
+        status: {$in: ['published']}, 
+        slug: {$ne: blog.slug}
+    })
+
     const { access_token } = await getAccessToken();
     const author = await getAuth0User(access_token, blog.userId);
    
