@@ -11,7 +11,7 @@ exports.getBlogs = async (req, res) =>{
     const { search } = req.query;
     let blogs;
     if (search) { // If search exists, the user typed in the search bar
-        blogs = Blog.aggregate(
+        blogs = await Blog.aggregate(
           [
            
             {
