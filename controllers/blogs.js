@@ -11,7 +11,7 @@ exports.getBlogs = async (req, res) =>{
     const { search } = req.query;
     let blogs;
     if (search) { // If search exists, the user typed in the search bar
-        Blog.aggregate(
+        blogs = Blog.aggregate(
           [
            
             {
@@ -59,11 +59,7 @@ exports.getBlogs = async (req, res) =>{
               }
             }
           ]
-        ).exec((err, populatedBlogs) => {
-            if (err) throw err;
-
-            blogs = populatedBlogs;
-        })
+        )
         
 
     }else { // The search is empty so the value of "search" is undefined
@@ -111,7 +107,7 @@ exports.getBlogBySlug = async (req, res) =>{
     const { access_token } = await getAccessToken();
     const author = await getAuth0User(access_token, blog.userId);
    
-    return res.json({blog, author, blogs: relatedblogs});
+    return res.json(blog, author, relatedblogs);
 }
 
 exports.createBlog = async (req, res) => {
