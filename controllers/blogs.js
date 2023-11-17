@@ -111,7 +111,7 @@ exports.getBlogBySlug = async (req, res) =>{
     const { access_token } = await getAccessToken();
     const author = await getAuth0User(access_token, blog.userId);
    
-    return res.json({blog, author, blogs: relatedblogs});
+    return res.json({blog, author, relatedblogs});
 }
 
 exports.createBlog = async (req, res) => {
