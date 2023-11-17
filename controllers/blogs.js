@@ -101,7 +101,7 @@ exports.getBlogBySlug = async (req, res) =>{
     const slug = req.params.slug
     const blog = await Blog.findOne({slug: slug})
     .populate('image')
-    .populate('comments');
+  
 
     const relatedblogs = await Blog.find({category: blog.category, slug: {$ne: blog.slug}})
     const { access_token } = await getAccessToken();
