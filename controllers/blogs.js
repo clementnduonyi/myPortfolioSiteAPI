@@ -84,7 +84,7 @@ exports.getBlogs = async (req, res) =>{
 exports.getBlog = async (req, res) =>{
     const blog = await Blog.findById(req.params.id)
     .populate('image')
-    .populate('comments');
+    .populate('category')
     return res.json(blog)
 }
 
@@ -93,7 +93,10 @@ exports.getBlogsByAuthor = async (req, res) => {
     const blog = await Blog.find({
         userId,
         status: { $in: ['draft', 'published'] }
-    }).populate('image');
+    })
+    .populate('image')
+    .populate('category')
+
     return res.json(blog)
 }
 
@@ -101,13 +104,14 @@ exports.getBlogBySlug = async (req, res) =>{
     const slug = req.params.slug
     const blog = await Blog.findOne({slug: slug})
     .populate('image')
-  
+    .populate('category')
+    
 
     const relatedblogs = await Blog.find({category: blog.category, slug: {$ne: blog.slug}})
     const { access_token } = await getAccessToken();
     const author = await getAuth0User(access_token, blog.userId);
    
-    return res.json(blog, author, relatedblogs);
+    return res.json({blog, author, blogs: relatedblogs});
 }
 
 exports.createBlog = async (req, res) => {
