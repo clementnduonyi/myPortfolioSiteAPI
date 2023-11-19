@@ -17,7 +17,7 @@ exports.getCat = async (req, res) =>{
 
 exports.getCatBySlug = async (req, res) =>{
     const category = await Category.findOne({slug: req.params.slug}).select('_id name slug')
-    const blogs = await Blog.find({category: {$in: category}})
+    const blogs = await Blog.find({category: {$in: category}, status: {$in: ['published']}})
     .populate('image')
     .populate('category')
 
@@ -83,13 +83,4 @@ exports.updateCategory = async (req, res) =>{
     }
     
 
-   
-   /* try{
-        const updatedCategory = 
-            await Category.findById({_id: id}, body, {new: true, runValidators: true})
-            await updatedCategory.save();
-            return res.json(updatedCategory)
-    }catch(error){
-        return res.status(422).send(error.message)
-    }*/
 }
