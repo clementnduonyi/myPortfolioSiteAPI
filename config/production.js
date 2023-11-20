@@ -8,7 +8,9 @@ module.exports = {
     AUTH0_DOMAIN: process.env.AUTH0_DOMAIN,
     CLOUDINARY_NAME: process.env.CLOUDINARY_NAME,
     CLOUDINARY_KEY: process.env.CLOUDINARY_KEY,
-    CLOUDINARY_SECRET: process.env.CLOUDINARY_SECRET
+    CLOUDINARY_SECRET: process.env.CLOUDINARY_SECRET,
+    GMAIL_USERNAME: process.env.GMAIL_USERNAME,
+    GMAIL_PASSWORD: process.env.GMAIL_PASSWORD
 
 
 }

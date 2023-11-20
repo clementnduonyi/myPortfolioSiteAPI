@@ -13,12 +13,14 @@ async function startServer(){
     const blogRoutes = require('./routes/blogs');
     const imageUploadRouts = require('./routes/images');
     const categoryRoutes = require('./routes/categories');
+    const contactRoutes = require('./routes/contacts');
     
 
     server.use('/api/v1/projects', projectsRoutes);
     server.use('/api/v1/blogs', blogRoutes);
     server.use('/api/v1/categories', categoryRoutes);
     server.use('/api/v1/images', imageUploadRouts);
+    server.use('/api/v1/contacts', contactRoutes);
    
     
     server.get('/app', (req, res)=>{
